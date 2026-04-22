@@ -12,11 +12,12 @@ hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
 // ── SLIDESHOW ──
+const ss = document.getElementById('slideshow');
 const slides = document.querySelectorAll('.slide');
 const dotsContainer = document.getElementById('slideDots');
 let current = 0, timer;
 
-// build dots
+// Build dots
 slides.forEach((_, i) => {
   const d = document.createElement('div');
   d.className = 'dot' + (i === 0 ? ' active' : '');
@@ -25,9 +26,8 @@ slides.forEach((_, i) => {
 });
 
 function goTo(n) {
-  slides[current].style.transform = '';
   current = (n + slides.length) % slides.length;
-  document.getElementById('slideshow').style.transform = `translateX(-${current * 100}%)`;
+  ss.style.transform = `translateX(-${current * 100}%)`;
   document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
   resetTimer();
 }
@@ -36,11 +36,6 @@ function resetTimer() {
   clearInterval(timer);
   timer = setInterval(() => goTo(current + 1), 3500);
 }
-
-// fix: slideshow uses container translateX
-const ss = document.getElementById('slideshow');
-ss.style.display = 'flex';
-ss.style.transition = 'transform .5s ease';
 
 document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
 document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
