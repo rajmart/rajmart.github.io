@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Raj Mart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div>
+      <div class="loader-text">Raj Mart</div>
+      <div class="loader-dot"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Raj Mart</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">&#9776;</div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Raj Mart</h1>
+      <p class="hero-sub">Your neighbourhood store for dairy, snacks, beverages & more</p>
+      <a href="#products" class="btn">Explore Products</a>
+    </div>
+    <div class="hero-badge">
+      <span>Fresh</span>
+      <span>Local</span>
+      <span>Trusted</span>
+    </div>
+  </section>
+
+  <!-- PRODUCT SLIDESHOW -->
+  <section id="products" class="section">
+    <h2 class="section-title">Brands We Carry</h2>
+    <p class="section-sub">Premium brands delivered right to your neighbourhood</p>
+    <div class="slideshow-wrapper">
+      <button class="slide-btn prev" id="prevBtn">&#8592;</button>
+      <div class="slideshow" id="slideshow">
+
+        <div class="slide">
+          <div class="brand-card amul">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/Amul_official_logo.svg/400px-Amul_official_logo.svg.png" alt="Amul Logo" class="brand-logo"/>
+            <div class="brand-desc">India's favourite dairy — milk, butter, cheese, ice cream & more</div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="brand-card balaji">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/71/BalajiWafersLogo.svg/320px-BalajiWafersLogo.svg.png" alt="Balaji Logo" class="brand-logo"/>
+            <div class="brand-desc">Crispy wafers, namkeen & tasty snacks from Gujarat's own brand</div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="brand-card gopal">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Gopal_Snacks_logo.png/320px-Gopal_Snacks_logo.png" alt="Gopal Logo" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+            <div class="brand-name-fallback" style="display:none">🧆 Gopal</div>
+            <div class="brand-desc">Delicious namkeen & snacks with an authentic Indian taste</div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="brand-card paperboat">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/69/Paper_Boat_logo.png/320px-Paper_Boat_logo.png" alt="Paper Boat Logo" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+            <div class="brand-name-fallback" style="display:none">🥤 Paper Boat</div>
+            <div class="brand-desc">Nostalgic Indian drinks — aamras, jaljeera, kokum & more</div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="brand-card gokul">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e6/Gokul_Dairy_logo.png/320px-Gokul_Dairy_logo.png" alt="Gokul Logo" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+            <div class="brand-name-fallback" style="display:none">🧈 Gokul</div>
+            <div class="brand-desc">Fresh & pure dairy products from trusted local farms</div>
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="brand-card real">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/Real_namkeen_logo.png/320px-Real_namkeen_logo.png" alt="Real Namkeen Logo" class="brand-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+            <div class="brand-name-fallback" style="display:none">🌾 Real Namkeen</div>
+            <div class="brand-desc">Crunchy, flavourful namkeen snacks for every occasion</div>
+          </div>
+        </div>
+
+      </div>
+      <button class="slide-btn next" id="nextBtn">&#8594;</button>
+    </div>
+    <div class="slide-dots" id="slideDots"></div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section id="categories" class="section bg-light">
+    <h2 class="section-title">What We Sell</h2>
+    <p class="section-sub">Everything you need, all in one place</p>
+    <div class="categories-grid">
+      <div class="cat-card"><div class="cat-icon">🥛</div><div class="cat-name">Dairy Products</div></div>
+      <div class="cat-card"><div class="cat-icon">🥤</div><div class="cat-name">Beverages</div></div>
+      <div class="cat-card"><div class="cat-icon">🍿</div><div class="cat-name">Snacks</div></div>
+      <div class="cat-card"><div class="cat-icon">🫧</div><div class="cat-name">Soda & Cold Drinks</div></div>
+      <div class="cat-card"><div class="cat-icon">🧆</div><div class="cat-name">Namkeen</div></div>
+      <div class="cat-card"><div class="cat-icon">🧴</div><div class="cat-name">Daily Essentials</div></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="about-wrapper">
+      <div class="about-text">
+        <h2 class="section-title left">About Raj Mart</h2>
+        <p>Raj Mart is your trusted local neighbourhood store in Bhavnagar, proudly serving the community with top-quality dairy products, beverages, snacks, sodas, and daily essentials.</p>
+        <p>We carry the best brands — Amul, Balaji, Gopal, Paper Boat, Gokul, Real Namkeen — so you always find what you need, fresh and at the best prices.</p>
+        <div class="about-stats">
+          <div class="stat"><span class="stat-num">6+</span><span class="stat-label">Top Brands</span></div>
+          <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Products</span></div>
+          <div class="stat"><span class="stat-num">❤️</span><span class="stat-label">Local Love</span></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="store-badge">
+          <div class="store-badge-logo">Raj Mart</div>
+          <div class="store-badge-tag">Est. Bhavnagar</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section bg-red">
+    <h2 class="section-title white">Visit Us</h2>
+    <p class="section-sub white">We'd love to see you at our store!</p>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div class="contact-label">Address</div>
+        <div class="contact-val">Diwanpara Road, Opp. Pamabhai Hadvaid,<br/>Bhavnagar – 364001</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <div class="contact-label">Call Us</div>
+        <div class="contact-val"><a href="tel:9428205640">9428205640</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-label">Hours</div>
+        <div class="contact-val">Mon – Sun<br/>7:00 AM – 10:00 PM</div>
+      </div>
+    </div>
+    <div class="map-container">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d550.7649852292187!2d72.1495946426662!3d21.77676150021382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395f5b1245d596ad%3A0x3e8df8e940d563fe!2sRaj%20Mart!5e0!3m2!1sen!2sin!4v1776864068477!5m2!1sen!2sin"
+        width="100%" height="400" style="border:0;border-radius:12px;" allowfullscreen loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Raj Mart</div>
+    <p>Diwanpara Road, Opp. Pamabhai Hadvaid, Bhavnagar – 364001</p>
+    <p>📞 9428205640</p>
+    <p class="footer-copy">© 2025 Raj Mart. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
