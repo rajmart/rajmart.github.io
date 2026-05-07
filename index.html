@@ -5,7 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="referrer" content="no-referrer"/>
   <title>Raj Mart</title>
+
+  <!-- Preconnect speeds up Google Fonts DNS + TLS before browser even requests fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <!-- Single font load (was duplicated before — CSS also had @import of same URL) -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -49,13 +56,13 @@
   <section id="products" class="section">
     <h2 class="section-title">Brands We Carry</h2>
     <p class="section-sub">Premium brands delivered right to your neighbourhood</p>
-    <div class="slideshow-wrapper">
-      <button class="slide-btn prev" id="prevBtn">&#8592;</button>
-      <div class="slideshow-track-wrap">
-      <div class="slideshow" id="slideshow">
+
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carouselTrack">
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/amul.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Amul</div>
               <div class="brand-desc">India's favourite dairy — milk, butter, cheese & ice cream</div>
@@ -65,6 +72,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/balaji.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Balaji</div>
               <div class="brand-desc">Crispy wafers & tasty namkeen from Gujarat's own snack brand</div>
@@ -74,6 +82,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/paperboat.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Paper Boat</div>
               <div class="brand-desc">Nostalgic Indian drinks — aamras, jaljeera, kokum & more</div>
@@ -83,6 +92,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/gokul.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Gokul</div>
               <div class="brand-desc">Fresh snacks & namkeen with authentic homestyle flavour</div>
@@ -92,6 +102,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/parle_agro.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Parle Agro</div>
               <div class="brand-desc">Frooti, Appy & Bailley — refreshing drinks for every occasion</div>
@@ -101,6 +112,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/image.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Real Bites</div>
               <div class="brand-desc">Bold & crunchy snacks bursting with real Indian flavours</div>
@@ -110,6 +122,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/parle.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Parle</div>
               <div class="brand-desc">Parle-G, Monaco & Hide n Seek — biscuits loved for generations</div>
@@ -119,6 +132,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/sunfeast.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Sunfeast</div>
               <div class="brand-desc">Dark Fantasy, Marie & Yippee — ITC's favourite biscuit range</div>
@@ -128,6 +142,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/Britannia.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Britannia</div>
               <div class="brand-desc">Good Day, NutriChoice & 50-50 — baked with love since 1892</div>
@@ -137,6 +152,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/davat.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Davat</div>
               <div class="brand-desc">Premium basmati rice & staples for every Indian kitchen</div>
@@ -146,6 +162,7 @@
 
         <div class="slide">
           <div class="brand-card" style="background-image:url('images/sosyo.jpg')">
+            <div class="brand-card-bg"></div>
             <div class="brand-overlay">
               <div class="brand-name-label">Sosyo</div>
               <div class="brand-desc">Surat's iconic cola-style drink with a unique desi twist</div>
@@ -153,11 +170,8 @@
           </div>
         </div>
 
-      </div><!-- end slideshow -->
-      </div><!-- end slideshow-track-wrap -->
-      <button class="slide-btn next" id="nextBtn">&#8594;</button>
-    </div>
-    <div class="slide-dots" id="slideDots"></div>
+      </div><!-- end carousel-track -->
+    </div><!-- end carousel-viewport -->
   </section>
 
   <!-- CATEGORIES -->
