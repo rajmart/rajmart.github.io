@@ -5,6 +5,21 @@ window.addEventListener('load', () => {
   }, 600);
 });
 
+// ── NAV GLASS / SOLID TOGGLE ──
+const nav = document.querySelector('nav');
+function updateNav() {
+  const heroH = document.getElementById('home').offsetHeight;
+  if (window.scrollY < heroH - 80) {
+    nav.classList.add('glass');
+    nav.classList.remove('solid');
+  } else {
+    nav.classList.add('solid');
+    nav.classList.remove('glass');
+  }
+}
+updateNav();
+window.addEventListener('scroll', updateNav);
+
 // ── HAMBURGER NAV ──
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.querySelector('.nav-links');
@@ -18,14 +33,12 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
   const originalSlides = Array.from(track.querySelectorAll('.slide'));
   const count = originalSlides.length;
 
-  // Clone slides 3× so we always have enough to fill the viewport seamlessly
   for (let i = 0; i < 3; i++) {
     originalSlides.forEach(slide => {
       track.appendChild(slide.cloneNode(true));
     });
   }
 
-  // Slide width = fraction of viewport (matches CSS: 33.333% desktop, 50% tablet, 72% mobile)
   function getSlidePercent() {
     const w = window.innerWidth;
     if (w <= 768) return 0.72;
@@ -48,8 +61,7 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
     if (pos < 0) pos += totalOrigW;
   });
 
-  // ── Auto-scroll state ──
-  const AUTO_SPEED = 1.8;        // ← increased from 0.7 — faster scroll
+  const AUTO_SPEED = 1.8;
   const SWIPE_DECEL = 0.92;
   const MIN_VELOCITY = 0.1;
 
@@ -78,19 +90,15 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
           isAutoScrolling = true;
         }
       }
-
-      // Seamless wrap using 1 set width (clones handle the visual gap)
       if (pos >= totalOrigW) pos -= totalOrigW;
       if (pos < 0) pos += totalOrigW;
     }
-
     applyTransform();
     rafId = requestAnimationFrame(loop);
   }
 
   loop();
 
-  // ── Mouse drag ──
   viewport.addEventListener('mousedown', e => {
     isDragging = true;
     isAutoScrolling = false;
@@ -124,7 +132,6 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
     isAutoScrolling = false;
   });
 
-  // ── Touch drag ──
   viewport.addEventListener('touchstart', e => {
     isDragging = true;
     isAutoScrolling = false;
@@ -167,4 +174,60 @@ window.addEventListener('scroll', () => {
       });
     }
   });
+});
+
+// ── HERO DOT GRID (proximity brightness) ──
+window.addEventListener('load', function () { (function () {
+  const canvas = document.getElementById('dotCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const SPACING = 58;   // gap between dot centres
+  const R_BASE  = 16;   // base dot radius
+  const RADIUS  = 160;  // mouse influence radius in px
+  const BASE_ALPHA  = 0.07;
+  const HOVER_ALPHA = 0.30;
+
+  let W, H, cols, rows, mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    const hero = document.getElementById('home');
+    W = canvas.width  = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
+    cols = Math.ceil(W / SPACING) + 1;
+    rows = Math.ceil(H / SPACING) + 1;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const hero = document.getElementById('home');
+  hero.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = c * SPACING;
+        const y = r * SPACING;
+        const dx = mouse.x - x;
+        const dy = mouse.y - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const proximity = dist < RADIUS ? 1 - dist / RADIUS : 0;
+        const alpha = BASE_ALPHA + (HOVER_ALPHA - BASE_ALPHA) * proximity * proximity;
+        ctx.beginPath();
+        ctx.arc(x, y, R_BASE, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+  })();
 });

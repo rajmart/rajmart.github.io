@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="referrer" content="no-referrer"/>
   <title>Raj Mart</title>
-
-  <!-- Preconnect speeds up Google Fonts DNS + TLS before browser even requests fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-
-  <!-- Single font load (was duplicated before — CSS also had @import of same URL) -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
-
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -40,6 +32,7 @@
 
   <!-- HERO -->
   <section id="home" class="hero">
+    <canvas id="dotCanvas"></canvas>
     <div class="hero-content">
       <h1 class="hero-title">Raj Mart</h1>
       <p class="hero-sub">Your neighbourhood store for dairy, snacks, beverages & more</p>
