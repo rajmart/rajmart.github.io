@@ -166,11 +166,24 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
 const sections = document.querySelectorAll('section[id]');
 const navAs = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
+  const isGlass = nav.classList.contains('glass');
   let scrollY = window.scrollY + 80;
   sections.forEach(sec => {
     if (scrollY >= sec.offsetTop && scrollY < sec.offsetTop + sec.offsetHeight) {
       navAs.forEach(a => {
-        a.style.color = a.getAttribute('href') === '#' + sec.id ? 'var(--red)' : '';
+        const isActive = a.getAttribute('href') === '#' + sec.id;
+        if (isActive) {
+          if (isGlass) {
+            a.style.color = '#fff';
+            a.style.textShadow = '0 0 10px rgba(255,255,255,0.9), 0 0 22px rgba(255,255,255,0.4)';
+          } else {
+            a.style.color = 'var(--red)';
+            a.style.textShadow = '';
+          }
+        } else {
+          a.style.color = '';
+          a.style.textShadow = '';
+        }
       });
     }
   });
