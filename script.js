@@ -61,7 +61,7 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
     if (pos < 0) pos += totalOrigW;
   });
 
-  const AUTO_SPEED = 1.8;
+  const AUTO_SPEED = 1.1;        // ← slowed down from 1.8
   const SWIPE_DECEL = 0.92;
   const MIN_VELOCITY = 0.1;
 
@@ -176,19 +176,29 @@ window.addEventListener('scroll', () => {
   });
 });
 
-// ── HERO DOT GRID (proximity brightness) ──
+// ── HERO DOT GRID ──
+// Desktop: proximity brightness on mouse move
+// Mobile:  diagonal brightness wave (top-left → bottom-right)
 window.addEventListener('load', function () { (function () {
   const canvas = document.getElementById('dotCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const SPACING = 58;   // gap between dot centres
-  const R_BASE  = 16;   // base dot radius
-  const RADIUS  = 160;  // mouse influence radius in px
+  const SPACING   = 58;
+  const R_BASE    = 16;
+  const RADIUS    = 160;   // desktop mouse radius
   const BASE_ALPHA  = 0.07;
   const HOVER_ALPHA = 0.30;
 
-  let W, H, cols, rows, mouse = { x: -9999, y: -9999 };
+  // Wave settings (mobile only)
+  const WAVE_SPEED  = 0.4;   // lower = slower wave travel
+  const WAVE_WIDTH  = 220;   // how wide the bright band is (px along diagonal)
+  const WAVE_ALPHA  = 0.28;  // peak brightness of the wave
+
+  let W, H, cols, rows;
+  let mouse = { x: -9999, y: -9999 };
+  let waveOffset = 0;        // how far the wave front has travelled along the diagonal
+  let isMobile = window.innerWidth <= 768;
 
   function resize() {
     const hero = document.getElementById('home');
@@ -196,12 +206,16 @@ window.addEventListener('load', function () { (function () {
     H = canvas.height = hero.offsetHeight;
     cols = Math.ceil(W / SPACING) + 1;
     rows = Math.ceil(H / SPACING) + 1;
+    isMobile = window.innerWidth <= 768;
   }
   resize();
   window.addEventListener('resize', resize);
 
   const hero = document.getElementById('home');
+
+  // Desktop mouse tracking
   hero.addEventListener('mousemove', e => {
+    if (isMobile) return;
     const rect = canvas.getBoundingClientRect();
     mouse.x = e.clientX - rect.left;
     mouse.y = e.clientY - rect.top;
@@ -210,21 +224,49 @@ window.addEventListener('load', function () { (function () {
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
+
+    // The diagonal length (top-left to bottom-right)
+    const diagLen = W + H;
+
+    // Advance wave — loop seamlessly
+    if (isMobile) {
+      waveOffset += WAVE_SPEED;
+      if (waveOffset > diagLen + WAVE_WIDTH) waveOffset = -WAVE_WIDTH;
+    }
+
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const x = c * SPACING;
         const y = r * SPACING;
-        const dx = mouse.x - x;
-        const dy = mouse.y - y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const proximity = dist < RADIUS ? 1 - dist / RADIUS : 0;
-        const alpha = BASE_ALPHA + (HOVER_ALPHA - BASE_ALPHA) * proximity * proximity;
+
+        let alpha = BASE_ALPHA;
+
+        if (isMobile) {
+          // Project dot onto the diagonal axis (x + y gives distance along top-left→bottom-right)
+          const diagPos = x + y;
+          // Distance from wave front centre
+          const dist = Math.abs(diagPos - waveOffset);
+          // Smooth bell-curve falloff within WAVE_WIDTH
+          if (dist < WAVE_WIDTH) {
+            const t = 1 - dist / WAVE_WIDTH;
+            alpha = BASE_ALPHA + (WAVE_ALPHA - BASE_ALPHA) * t * t;
+          }
+        } else {
+          // Desktop: mouse proximity
+          const dx = mouse.x - x;
+          const dy = mouse.y - y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const proximity = dist < RADIUS ? 1 - dist / RADIUS : 0;
+          alpha = BASE_ALPHA + (HOVER_ALPHA - BASE_ALPHA) * proximity * proximity;
+        }
+
         ctx.beginPath();
         ctx.arc(x, y, R_BASE, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
         ctx.fill();
       }
     }
+
     requestAnimationFrame(draw);
   }
 
