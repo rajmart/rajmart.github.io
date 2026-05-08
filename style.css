@@ -178,14 +178,22 @@ footer p{font-size:.9rem;margin-bottom:4px;}
   .slide{ flex: 0 0 50%; }   /* 2 cards on tablet */
 }
 @media(max-width:768px){
-  .nav-links{display:none;flex-direction:column;position:absolute;top:64px;left:0;width:100%;background:#fff;padding:20px 5%;border-bottom:2px solid var(--red);gap:14px;box-shadow:0 8px 20px #0002;}
+  .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;width:100%;padding:20px 5%;gap:14px;z-index:150;}
   .nav-links.open{display:flex;}
-  /* Force dark text in mobile dropdown — overrides glass white */
-  .nav-links.open a{color:#222 !important;font-weight:600 !important;text-shadow:none !important;}
-  .nav-links.open a:hover{color:var(--red) !important;}
+
+  /* Glass dropdown — on hero (nav.glass) */
+  nav.glass .nav-links.open{background:rgba(180,0,20,0.40);backdrop-filter:blur(60px) saturate(2.5) brightness(0.85);-webkit-backdrop-filter:blur(60px) saturate(2.5) brightness(0.85);border-top:1px solid rgba(255,255,255,0.30);border-bottom:1px solid rgba(255,255,255,0.20);box-shadow:0 12px 40px rgba(0,0,0,0.15);z-index:200;}
+  nav.glass .nav-links.open a{color:#fff !important;font-weight:700 !important;text-shadow:0 1px 6px rgba(0,0,0,0.3) !important;}
+  nav.glass .nav-links.open a:hover{color:#ffcccc !important;}
+
+  /* Solid dropdown — scrolled (nav.solid) */
+  nav.solid .nav-links.open{background:#fff;border-bottom:2px solid var(--red);box-shadow:0 8px 20px #0002;backdrop-filter:none;-webkit-backdrop-filter:none;}
+  nav.solid .nav-links.open a{color:#222 !important;font-weight:600 !important;text-shadow:none !important;}
+  nav.solid .nav-links.open a:hover{color:var(--red) !important;}
+
   .hamburger{display:block;}
   .about-visual{flex:0 0 100%;}
   .store-badge{width:100%;}
-  .slide{ flex: 0 0 72%; }   /* 1.4 cards visible on mobile */
+  .slide{ flex: 0 0 72%; }
   .brand-card{aspect-ratio:1 / 1;height:auto;}
 }

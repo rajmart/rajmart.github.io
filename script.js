@@ -177,28 +177,32 @@ window.addEventListener('scroll', () => {
 });
 
 // ── HERO DOT GRID ──
-// Desktop: proximity brightness on mouse move
-// Mobile:  diagonal brightness wave (top-left → bottom-right)
+// Desktop: wave (always) + proximity boost on mouse move
+// Mobile:  wave only
 window.addEventListener('load', function () { (function () {
   const canvas = document.getElementById('dotCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const SPACING   = 58;
-  const R_BASE    = 16;
-  const RADIUS    = 160;   // desktop mouse radius
+  const SPACING     = 58;
+  const R_BASE      = 16;
+  const RADIUS      = 180;   // desktop mouse proximity radius
   const BASE_ALPHA  = 0.07;
-  const HOVER_ALPHA = 0.30;
+  const HOVER_ALPHA = 0.38;  // extra brightness from mouse proximity
 
-  // Wave settings (mobile only)
-  const WAVE_SPEED  = 1.4;   // lower = slower wave travel
-  const WAVE_WIDTH  = 220;   // how wide the bright band is (px along diagonal)
-  const WAVE_ALPHA  = 0.55;  // peak brightness of the wave
+  // Wave settings (both desktop + mobile)
+  const WAVE_SPEED  = 1.4;   // px per frame along diagonal
+  const WAVE_WIDTH  = 200;   // half-width of the bright band (px along diagonal)
+  const WAVE_ALPHA  = 0.50;  // peak brightness of wave
 
   let W, H, cols, rows;
   let mouse = { x: -9999, y: -9999 };
-  let waveOffset = 0;        // how far the wave front has travelled along the diagonal
+  // Two waves staggered by diagLen so there's never a dead gap
+  let wave1 = 0;
+  let wave2 = 0; // will be set after first resize
   let isMobile = window.innerWidth <= 768;
+
+  function diagLen() { return W + H; }
 
   function resize() {
     const hero = document.getElementById('home');
@@ -207,57 +211,69 @@ window.addEventListener('load', function () { (function () {
     cols = Math.ceil(W / SPACING) + 1;
     rows = Math.ceil(H / SPACING) + 1;
     isMobile = window.innerWidth <= 768;
+    // Keep waves valid after resize
+    const dl = diagLen();
+    if (wave2 <= wave1) wave2 = wave1 + dl;
   }
   resize();
+  // Start wave1 already a little past the edge so it's visible immediately
+  wave1 = WAVE_WIDTH * 0.5;
+  wave2 = wave1 + diagLen();
+
   window.addEventListener('resize', resize);
 
   const hero = document.getElementById('home');
 
-  // Desktop mouse tracking
+  // Track mouse on desktop
   hero.addEventListener('mousemove', e => {
-    if (isMobile) return;
     const rect = canvas.getBoundingClientRect();
     mouse.x = e.clientX - rect.left;
     mouse.y = e.clientY - rect.top;
   });
   hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
 
+  function waveContrib(diagPos, waveOffset) {
+    const dist = Math.abs(diagPos - waveOffset);
+    if (dist >= WAVE_WIDTH) return 0;
+    const t = 1 - dist / WAVE_WIDTH;
+    return (WAVE_ALPHA - BASE_ALPHA) * t * t;
+  }
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    // The diagonal length (top-left to bottom-right)
-    const diagLen = W + H;
+    const dl = diagLen();
 
-    // Advance wave — loop seamlessly
-    if (isMobile) {
-      waveOffset += WAVE_SPEED;
-      if (waveOffset > diagLen + WAVE_WIDTH) waveOffset = -WAVE_WIDTH;
-    }
+    // Advance both waves
+    wave1 += WAVE_SPEED;
+    wave2 += WAVE_SPEED;
+
+    // Loop: as soon as wave1 exits, reset it one diagLen behind wave2
+    if (wave1 > dl + WAVE_WIDTH) wave1 = wave2 - dl;
+    if (wave2 > dl + WAVE_WIDTH) wave2 = wave1 - dl;
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const x = c * SPACING;
         const y = r * SPACING;
 
-        let alpha = BASE_ALPHA;
+        // Diagonal projection of this dot
+        const diagPos = x + y;
 
-        if (isMobile) {
-          // Project dot onto the diagonal axis (x + y gives distance along top-left→bottom-right)
-          const diagPos = x + y;
-          // Distance from wave front centre
-          const dist = Math.abs(diagPos - waveOffset);
-          // Smooth bell-curve falloff within WAVE_WIDTH
-          if (dist < WAVE_WIDTH) {
-            const t = 1 - dist / WAVE_WIDTH;
-            alpha = BASE_ALPHA + (WAVE_ALPHA - BASE_ALPHA) * t * t;
-          }
-        } else {
-          // Desktop: mouse proximity
+        // Wave contribution (both waves, take max)
+        const wc = Math.max(waveContrib(diagPos, wave1), waveContrib(diagPos, wave2));
+
+        let alpha = BASE_ALPHA + wc;
+
+        // On desktop: also add mouse proximity boost
+        if (!isMobile) {
           const dx = mouse.x - x;
           const dy = mouse.y - y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const proximity = dist < RADIUS ? 1 - dist / RADIUS : 0;
-          alpha = BASE_ALPHA + (HOVER_ALPHA - BASE_ALPHA) * proximity * proximity;
+          if (dist < RADIUS) {
+            const proximity = 1 - dist / RADIUS;
+            alpha = Math.min(alpha + (HOVER_ALPHA - BASE_ALPHA) * proximity * proximity, 0.75);
+          }
         }
 
         ctx.beginPath();
