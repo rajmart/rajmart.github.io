@@ -25,6 +25,8 @@ nav.glass .logo{color:#fff;}
 nav.glass .nav-links a{color:#fff;font-weight:700;}
 nav.glass .nav-links a:hover{color:#ffcccc;}
 nav.glass .hamburger{color:#fff;}
+/* Home link white glow so it stands out */
+nav.glass .nav-links a[href="#home"]{text-shadow:0 0 10px rgba(255,255,255,0.9),0 0 22px rgba(255,255,255,0.4);}
 /* ── Solid white state (scrolled down) ── */
 nav.solid{background:#fff;border-bottom:3px solid var(--red);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 2px 12px #d0001f22;}
 nav.solid .logo{color:var(--red);}
@@ -176,8 +178,11 @@ footer p{font-size:.9rem;margin-bottom:4px;}
   .slide{ flex: 0 0 50%; }   /* 2 cards on tablet */
 }
 @media(max-width:768px){
-  .nav-links{display:none;flex-direction:column;position:absolute;top:64px;left:0;width:100%;background:#fff;padding:20px 5%;border-bottom:2px solid var(--red);gap:14px;}
+  .nav-links{display:none;flex-direction:column;position:absolute;top:64px;left:0;width:100%;background:#fff;padding:20px 5%;border-bottom:2px solid var(--red);gap:14px;box-shadow:0 8px 20px #0002;}
   .nav-links.open{display:flex;}
+  /* Force dark text in mobile dropdown — overrides glass white */
+  .nav-links.open a{color:#222 !important;font-weight:600 !important;text-shadow:none !important;}
+  .nav-links.open a:hover{color:var(--red) !important;}
   .hamburger{display:block;}
   .about-visual{flex:0 0 100%;}
   .store-badge{width:100%;}
