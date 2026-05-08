@@ -191,9 +191,9 @@ window.addEventListener('load', function () { (function () {
   const HOVER_ALPHA = 0.30;
 
   // Wave settings (mobile only)
-  const WAVE_SPEED  = 0.4;   // lower = slower wave travel
+  const WAVE_SPEED  = 1.4;   // lower = slower wave travel
   const WAVE_WIDTH  = 220;   // how wide the bright band is (px along diagonal)
-  const WAVE_ALPHA  = 0.28;  // peak brightness of the wave
+  const WAVE_ALPHA  = 0.55;  // peak brightness of the wave
 
   let W, H, cols, rows;
   let mouse = { x: -9999, y: -9999 };
